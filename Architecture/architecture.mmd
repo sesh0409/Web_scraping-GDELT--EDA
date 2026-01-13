@@ -1,57 +1,53 @@
 flowchart TD
-  %% =========================
-  %% END-to-END ARCHITECTURE: GDELT -> Storage -> Processing -> EDA -> Exports
-  %% Paste into a .mmd / README Mermaid block
-  %% =========================
 
-  A[User Inputs\nCompany List (96) + Keywords + Date Range (<= ~3 months)] --> B[Config Loader\nYAML/JSON: query templates, safe limits, retries]
+A["User inputs: company list, keywords, date range"] --> B["Config: query templates, safe limits, retries"]
 
-  subgraph S1[Ingestion & Scraping]
-    direction TB
-    B --> C[GDELT API Client\nFetch DOC/Events data (paged)]
-    C --> D[Rate Limit & Safety Controls\nThrottle, backoff, retries, timeout handling]
-    D --> E[Raw Response Collector\nJSON/CSV batches per company/date]
-  end
+subgraph S1["Ingestion and scraping"]
+direction TB
+B --> C["GDELT API client: fetch data with pagination"]
+C --> D["Safety controls: throttle, backoff, retries"]
+D --> E["Raw collector: JSON or CSV batches"]
+end
 
-  subgraph S2[Landing / Raw Storage]
-    direction TB
-    E --> F[Raw Data Store\n/raw/gdelt/YYYY-MM-DD/\ncompany=.../batch=...]
-    F --> G[Run Logs\nrequest count, failures, latency,\nstatus codes, retry stats]
-  end
+subgraph S2["Raw storage"]
+direction TB
+E --> F["Raw store: raw/gdelt/date/company/batch"]
+F --> G["Run logs: requests, failures, latency"]
+end
 
-  subgraph S3[Processing & Normalization]
-    direction TB
-    F --> H[Schema Normalizer\nstandardize columns, timestamps,\nsource, url, language]
-    H --> I[Deduplication\nURL hash, title+datetime, source keys]
-    I --> J[Text Cleaning\nHTML cleanup, lowercasing,\nstopwords, punctuation, lemmatization (optional)]
-    J --> K[Curated Dataset Builder\nnews_all_with_body_and_datetime_nullable.csv]
-  end
+subgraph S3["Processing and normalization"]
+direction TB
+F --> H["Schema normalize: columns, timestamps, source, url"]
+H --> I["Deduplicate: url hash and title time keys"]
+I --> J["Text cleaning: strip html, stopwords, normalize"]
+J --> K["Curated dataset: master CSV"]
+end
 
-  subgraph S4[EDA & Interactive Analytics]
-    direction TB
-    K --> L[Feature Engineering\nMonth_Year, buckets, source groups,\ncompany aliases]
-    L --> M[Sweetviz Profiling\nEDA_Sweetviz_*.html]
-    L --> N[TF-IDF Pipeline\nVectorize title+body,\nTop tokens per filter selection]
-    L --> O[Plotly Dashboard Builder\nCascading filters:\nBucket -> Source -> Query/Company -> Month range]
-    N --> O
-    O --> P[Interactive Output\nEDA_Plotly_*.html]
-  end
+subgraph S4["EDA and analytics"]
+direction TB
+K --> L["Feature engineering: month_year, buckets, group fields"]
+L --> M["Sweetviz report: EDA html"]
+L --> N["TFIDF keywords: top tokens by selected filter"]
+L --> O["Plotly dashboard: cascading filters and trends"]
+N --> O
+O --> P["Interactive output: Plotly html"]
+end
 
-  subgraph S5[Exports & Reporting]
-    direction TB
-    P --> Q[Kaleido Export Layer\nStatic PNG/SVG from Plotly charts\n(for reports & submissions)]
-    M --> R[Shareable Artifacts\nSweetviz HTML + Plotly HTML + Images]
-  end
+subgraph S5["Exports"]
+direction TB
+P --> Q["Kaleido exports: static PNG or SVG"]
+M --> R["Artifacts: Sweetviz html, Plotly html, images"]
+Q --> R
+end
 
-  subgraph S6[Consumption]
-    direction TB
-    R --> T[GitHub Repo\nREADME + /outputs + /reports]
-    R --> U[Academic Submission\nPDF/Doc + Images + Links]
-    R --> V[Further Modeling (Optional)\nSentiment scoring, SARIMAX,\nGranger tests, forecasting]
-  end
+subgraph S6["Consumption"]
+direction TB
+R --> T["GitHub repo: README and outputs"]
+R --> U["Submission pack: report and images"]
+R --> V["Optional modeling: sentiment and forecasting"]
+end
 
-  %% Cross-links / Notes
-  G -. monitoring .-> D
-  K -. reproducibility .-> B
-  D -. safe usage .-> W[Limitation Note\nFree API practical window:\n~3 months consistent data\nwithin safe limits]
-  W -. documentation .-> T
+G -. "monitoring" .-> D
+B -. "reproducibility" .-> K
+D --> W["Limitation: free tier practical window about 3 months"]
+W --> T
