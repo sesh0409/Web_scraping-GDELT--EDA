@@ -1,14 +1,14 @@
 # Web_scraping-GDELT--EDA
 A Collection of codes used for Scraping Stock news using GDELT API and EDA on the scraped text
 
-📌 Data Collection & Exploratory Data Analysis (EDA)
+#📌 Data Collection & Exploratory Data Analysis (EDA)
 1. GDELT API – Global News Web Scraping
 
 This project uses the GDELT (Global Database of Events, Language, and Tone) API as the primary data source for collecting global stock-market–related news.
 
 GDELT is an open, publicly available news intelligence platform that monitors broadcast, print, and online news media across the world in near real time. Using its Events and Mentions datasets, this project programmatically scraped news articles related to 96 publicly listed companies across global markets, ensuring broad geographic and sectoral coverage.
 
-Key aspects of data collection:
+##Key aspects of data collection:
 
 API-based web scraping using keyword-driven company identifiers
 
@@ -18,7 +18,7 @@ News coverage includes article metadata, source, timestamps, and textual content
 
 Focused specifically on stock-related and corporate news
 
-2. Exploratory Data Analysis (EDA) Framework
+#2. Exploratory Data Analysis (EDA) Framework
 
 After data ingestion and preprocessing, a comprehensive EDA pipeline was built using Sweetviz and Plotly, enabling both automated statistical profiling and interactive visual exploration.
 
@@ -32,7 +32,7 @@ Kaleido – static image export compatibility for Plotly (PNG/HTML)
 
 Pandas / NumPy – data wrangling and transformations
 
-3. Interactive EDA Design & Cascading Filters
+#3. Interactive EDA Design & Cascading Filters
 
 The EDA dashboard is designed with cascading filters, allowing users to drill down into the data dynamically.
 Filter selections automatically update all dependent visuals and text analytics.
@@ -59,7 +59,7 @@ Source-level news bias and frequency exploration
 
 Time-series inspection of news volume and patterns
 
-4. TF-IDF–Based Keyword Importance Analysis
+#4. TF-IDF–Based Keyword Importance Analysis
 
 To extract meaningful insights from textual news data, a TF-IDF (Term Frequency–Inverse Document Frequency) approach was applied.
 
@@ -89,7 +89,7 @@ Company-specific thematic signals
 
 Shifts in media focus across time and geography
 
-5. Output Formats & Visualization Export
+#5. Output Formats & Visualization Export
 
 The EDA outputs are generated in multiple formats to support different consumption needs:
 
@@ -107,7 +107,7 @@ Academic submissions
 
 Presentations and reports
 
-6. Limitations & Data Constraints
+#6. Limitations & Data Constraints
 
 While GDELT is a powerful global news intelligence platform, it has inherent limitations due to its free and open-access nature:
 
@@ -133,7 +133,7 @@ Event-based stock movement studies
 
 Proof-of-concept NLP and time-series modeling
 
-7. Summary
+#7. Summary
 
 This pipeline demonstrates a scalable, reproducible workflow for:
 
